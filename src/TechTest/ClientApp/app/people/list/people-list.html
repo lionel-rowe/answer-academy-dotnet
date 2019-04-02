@@ -12,19 +12,30 @@
       </tr>
     </thead>
     <tbody>
-      
+
       <!--
-        TODO: Step 6
-        Add styles to Palindrome, Authorised and Enabled values.
-        When the value is Yes the text colour should be Green.
-        When the value is No the text colour should be Red.
+        DONE: Step 6
+
+        I'm not sure on best practice in Aurelia regarding inline css vs.
+        classes with external stylesheets. For simplicity, I've used inline
+        styles here.
+
+        Another alternative, though a little off-spec (background-color instead
+        of color), would be to use the pre-provided styles in bulma.io:
+
+          - `css="color: ${person[attr] ? '#0a0' : '#e00'}"`
+          + `class="${person[attr] ? 'is-success' : 'is-danger'}">`
       -->
 
       <tr repeat.for="person of people" person.bind="person">
         <td><a class="is-link" href="/people/${person.id}">${person.fullName}</a></td>
-        <td>${person.palindrome ? 'Yes' : 'No'}</td>
-        <td>${person.authorised ? 'Yes' : 'No'}</td>
-        <td>${person.enabled ? 'Yes' : 'No'}</td>
+
+        <template repeat.for="attr of ['palindrome', 'authorised', 'enabled']">
+          <td css="color: ${person[attr] ? '#0a0' : '#e00'}">
+            ${person[attr] ? 'Yes' : 'No'}
+          </td>
+        </template>
+        
         <td>${person.colours | colourNames }</td>
       </tr>
     </tbody>
