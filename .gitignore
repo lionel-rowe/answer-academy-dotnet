@@ -234,3 +234,10 @@ _Pvt_Extensions
 
 # FAKE - F# Make
 .fake/
+
+# per README
+src/TechTest/node_modules
+src/TechTest/bin
+src/TechTest/obj
+
+src/TechTest/wwwroot/dist
