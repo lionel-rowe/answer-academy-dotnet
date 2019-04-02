@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using TechTest.Repositories;
 using TechTest.Repositories.Models;
+using System.Collections.Generic;
 
 namespace TechTest.Controllers
 {
@@ -19,42 +20,46 @@ namespace TechTest.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            // TODO: Step 1
-            //
-            // Implement a JSON endpoint that returns the full list
-            // of people from the PeopleRepository. If there are zero
-            // people returned from PeopleRepository then an empty
-            // JSON array should be returned.
+            // DONE: Step 1
 
-            throw new NotImplementedException();
+            // No extra logic required for handling the zero results case -
+            // PersonRepository.GetAll() always returns an IEnumerable<Person>,
+            // even if count is 0.
+            IEnumerable<Person> people = PersonRepository.GetAll();
+
+            return Ok(people);
         }
 
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            // TODO: Step 2
-            //
-            // Implement a JSON endpoint that returns a single person
-            // from the PeopleRepository based on the id parameter.
-            // If null is returned from the PeopleRepository with
-            // the supplied id then a NotFound should be returned.
+            // DONE: Step 2
 
-            throw new NotImplementedException();
+            Person person = PersonRepository.Get(id);
+
+            if (person == null) {
+                return NotFound();
+            }
+
+            return Ok(person);
         }
 
         [HttpPut("{id}")]
         public IActionResult Update(int id, PersonUpdate personUpdate)
         {
-            // TODO: Step 3
-            //
-            // Implement an endpoint that receives a JSON object to
-            // update a person using the PeopleRepository based on
-            // the id parameter. Once the person has been successfully
-            // updated, the person should be returned from the endpoint.
-            // If null is returned from the PeopleRepository then a
-            // NotFound should be returned.
+            // DONE: Step 3
 
-            throw new NotImplementedException();
+            Person person = PersonRepository.Get(id);
+
+            if (person == null) {
+                return NotFound();
+            }
+
+            person.Authorised = personUpdate.Authorised;
+            person.Enabled = personUpdate.Enabled;
+            person.Colours = personUpdate.Colours;
+
+            return Ok(person);
         }
     }
 }
