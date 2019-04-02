@@ -37,14 +37,32 @@ export class PersonEdit {
 
   async submit() {
 
-    // TODO: Step 7
-    //
-    // Implement the submit and save logic.
-    // Send a JSON request to the API with the newly updated
-    // this.person object. If the response is successful then
-    // the user should be navigated to the list page.
+    // DONE: Step 7
 
-    throw new Error('Not Implemented');
+    const { id, authorised, enabled, colours } = this.person;
+
+    const body = {
+      authorised,
+      enabled,
+      colours
+    };
+
+    const response = await this.http.fetch(`/people/${this.person.id}`, {
+      method: 'PUT',
+      body: JSON.stringify(body),
+      headers: {
+        'content-type': 'application/json; charset=utf-8'
+      }
+    });
+
+    if (response.ok) {
+      this.router.navigate('people');
+    } else {
+      // In production, we'd have considerably more in-depth error handling,
+      // but here I'm just using a simple `alert` and ignoring non-HTTP errors.
+      alert('An error occurred while saving. Please try again or contact tech support.');
+    }
+
   }
 
   cancel() {
