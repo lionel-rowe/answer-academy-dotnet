@@ -27,16 +27,20 @@ export class Person implements IPerson {
 
   @computedFrom('fullName')
   get palindrome(): boolean {
+    // DONE: Step 5
+    const sanitized = this.fullName.replace(/\s+/g, '').toLowerCase();
 
-    // TODO: Step 5
-    //
-    // Implement the palindrome computed field.
-    // True should be returned When the FullName is spelt the same
-    // forwards as it is backwards. The match should ignore any
-    // spaces and should also be case insensitive.
-    //
-    // Example: 'Bo Bob' is a palindrome.
-
-    return false;
+    // [...str] deals with slightly more edge cases than str.split(''), due to
+    // correctly handling non-BMP unicode characters, but this will still fail
+    // for corner cases such as combining diacritics, and cases like Turkish
+    // İi/Iı will also fail due to `toLowerCase()` being locale agnostic.
+    // 
+    // Mathias Bynens has a fantastic article
+    // (https://mathiasbynens.be/notes/javascript-unicode) on the problems of
+    // handling every possible case when reversing a string in JavaScript.
+    // 
+    // I'm assuming the corner cases aren't too important here, as all the
+    // names in the sample are ASCII-compatible.
+    return [...sanitized].reverse().join('') === sanitized;
   }
 }
